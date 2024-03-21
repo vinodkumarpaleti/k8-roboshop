@@ -24,13 +24,13 @@ spec:
       containers:
       - name: catalogue
         image: vinodkumarpaleti/catalogue:1.0.0
-        # resources:
-        #   requests:
-        #     cpu: "50m"
-        #     memory: "68Mi"
-        #   limits:
-        #     cpu: "100m"
-        #     memory: "128Mi"
+        resources:
+          requests:
+            cpu: "50m"
+            memory: "68Mi"
+          limits:
+            cpu: "100m"
+            memory: "128Mi"
         envFrom:
         - configMapRef:
             name: catalogue
@@ -60,22 +60,22 @@ data:
   MONGO: "true" # keep true in double quotes
   MONGO_URL: "mongodb://mongodb:27017/catalogue" # protocol//service-name:service-port/schema
 ---
-# apiVersion: autoscaling/v2
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: catalogue
-#   namespace: roboshop
-# spec:
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: catalogue
-#   minReplicas: 1
-#   maxReplicas: 10
-#   metrics:
-#   - type: Resource
-#     resource:
-#       name: cpu
-#       target:
-#         type: Utilization
-#         averageUtilization: 75
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: catalogue
+  namespace: roboshop
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: catalogue
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 75
